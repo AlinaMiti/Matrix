@@ -27,18 +27,30 @@ int main(){
     //vec2.Normal();
     //std::cout << vec2 << std::endl;
 
-    Matrix<int> matrix = Matrix<int>(3, 3);
-    matrix.Random();
-    Matrix<int> matrix2 = Matrix<int>(3, 2);
-    matrix2.Random();
-    Matrix<int> result = matrix + matrix2;
-    //std::cout << result << std::endl;
-    std::cout << matrix << std::endl;
-    int det = matrix.Determinant();
     
-    std::cout << det << std::endl;
+    //Matrix<int> matrix2 = Matrix<int>(3, 2);
+    //matrix2.Random();
+    //Matrix<int> result = matrix + matrix2;
+    //std::cout << result << std::endl;
+
+
+    Matrix<double> matrix = Matrix<double>(3, 3);
+    matrix.Random();
+    std::cout << matrix << std::endl;
+
+    Matrix TrMatrix = matrix.TransponirMatrix();
+    std::cout << "Transponir: " << std::endl << TrMatrix << std::endl;
+
+    Matrix<double> M = TrMatrix.ObratMatrix();
+    std::cout << "Obratn: "<< std::endl << M << std::endl;
+
+    Matrix<double> Prow = M * matrix;
+    std::cout << "Prowerka: " << std::endl << Prow << std::endl;
+    //int det = matrix.Determinant();
+    
+    //std::cout << "Det: " << det << std::endl;
     //std::cout << matrix2 << std::endl;
-    Matrix<int> matrix12 = matrix * matrix2;
+    //Matrix<int> matrix12 = matrix * matrix2;
     //std::cout << matrix12  << std::endl;
     
 

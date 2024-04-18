@@ -1,0 +1,1 @@
+/usr/bin/g++-12  -fsanitize=address -g CMakeFiles/main.dir/main.cpp.o -o main 

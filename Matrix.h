@@ -18,6 +18,18 @@ public:
             _vectors[i] = Vector<T>(cols);
     }
 
+    Matrix(const Matrix& tmp){
+        _size = tmp._size;
+        _vectors = new Vector<T>[_size];
+        for (size_t i = 0; i < _size; i++)
+            _vectors[i] = Vector<T>(tmp._vectors->SizeCols());        
+        for (size_t i = 0; i < _size; i++){
+            for (size_t j = 0; j < _vectors->SizeCols(); j++){
+                _vectors[i][j] = tmp._vectors[i][j];
+            }
+        }
+    }
+
     void Random(){
         for (size_t i = 0; i < _size; i++){
             for (size_t j = 0; j < _vectors->SizeCols(); j++){
@@ -48,7 +60,7 @@ public:
     double Determinant()const{
         double det = 0;
         if (_size != _vectors->SizeCols()){
-            std::cout << "Error" << std::endl;
+            std::cout << "Error4" << std::endl;
             exit;
         }
         if (_size == 1)
@@ -57,11 +69,11 @@ public:
             return _vectors[0][0] * _vectors[1][1] - _vectors[0][1] * _vectors[1][0];
         else{
             int det = 0;
-            for (size_t k = 0; k < _size; k++){
+            for (size_t k = 0; k < _size; k++){   //столбец из нулевой строки
                 Matrix<int> New = Matrix<int>(_size - 1, _size - 1);
-                for (size_t i = 0; i < _size; i++){
-                    size_t t = 0;
-                    for (size_t j = 0; j < _size; j++){
+                for (size_t i = 1; i < _size; i++){  //строка матрицы
+                    size_t t = 0;                   //столбец минора
+                    for (size_t j = 0; j < _size; j++){   //столбец матрицы
                         if (j == k)
                             continue;
                         New[i-1][t] = _vectors[i][j];
@@ -73,6 +85,45 @@ public:
             return det;
         }  
     }
+
+    Matrix ObratMatrix()const{
+        double Deter = Determinant();
+        Matrix<double> Rez = Matrix<double>(_size, _size);
+        for(size_t s = 0; s < _size; s++){
+        for (size_t k = 0; k < _size; k++){
+            Matrix<int> New = Matrix<int>(_size - 1, _size - 1);
+            size_t d = 0;
+            for (size_t i = 0; i < _size; i++){
+                size_t t = 0;
+                if (i == s)
+                    continue;
+                for (size_t j = 0; j < _size; j++){   
+                        if (j == k)
+                            continue;
+                        New[d][t] = _vectors[i][j];
+                        t++;
+                    }
+                d++;
+                }
+                
+                Rez[s][k] = (pow(-1, k+s) * New.Determinant())/Deter;
+            }
+        }
+        return Rez;
+    }
+    
+
+    Matrix TransponirMatrix()const{
+        Matrix<T> Rez = Matrix<T>(_size, _size);
+        for (size_t i = 0; i < _size; i++){
+            for (size_t j = 0; j < _size; j++){
+                Rez[i][j] = _vectors[j][i];
+            }
+        }
+        return Rez;
+    }
+
+    
 
     Matrix operator+(const Matrix& tmp)const{
         Matrix result = Matrix(_size, _vectors->SizeCols());
